@@ -3746,6 +3746,7 @@ checker();
 Object.assign(translations["简体中文"], {
 	"Move guidance (board and PV)": "走法指导（棋盘和右侧 PV）",
 	"Evaluation graph": "评价曲线图",
+	"Side to move at bottom": "行棋方朝下",
 	"Position": "局面",
 	"Edit Position": "编辑局面",
 	"Clear annotations": "清除标记",
@@ -3828,6 +3829,7 @@ Object.assign(translations["简体中文"], {
 Object.assign(translations["繁體中文"], {
 	"Move guidance (board and PV)": "走法指導（棋盤和右側 PV）",
 	"Evaluation graph": "評價曲線圖",
+	"Side to move at bottom": "行棋方朝下",
 	"Position": "局面",
 	"Edit Position": "編輯局面",
 	"Clear annotations": "清除標記",

@@ -1093,6 +1093,17 @@ function menu_build() {
 					}
 				},
 				{
+					label: translate.t("Side to move at bottom"),
+					type: "checkbox",
+					checked: config.auto_flip_board,
+					click: () => {
+						win.webContents.send("call", {
+							fn: "toggle",
+							args: ["auto_flip_board"],
+						});
+					}
+				},
+				{
 					type: "separator"
 				},
 				{

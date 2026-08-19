@@ -72,6 +72,7 @@ exports.defaults = {
 	"arrows_enabled": true,
 	"show_move_guidance": true,
 	"show_evaluation_graph": true,
+	"auto_flip_board": false,
 	"click_spotlight": true,
 	"next_move_arrow": false,
 	"next_move_outline": false,

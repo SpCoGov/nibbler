@@ -143,6 +143,7 @@ let hub_props = {
 		this.hoverdraw_div = -1;
 		this.position_change_time = performance.now();
 		fenbox.value = this.tree.node.board.fen(true);
+		this.sync_auto_flip();
 
 		if (new_game_flag) {
 			this.node_to_clean = null;
@@ -2231,12 +2232,21 @@ let hub_props = {
 			graph.style.height = config.graph_height.toString() + "px";
 			this.grapher.invalidate();
 		}
+		if (option === "auto_flip_board") {
+			this.sync_auto_flip();
+		}
 
 		this.info_handler.must_draw_infobox();
 		this.draw();
 	},
 
-	toggle_flip: function() {						// config.flip should not be directly set, call this function instead.
+	sync_auto_flip: function() {
+		if (config.auto_flip_board && config.flip !== (this.tree.node.board.active === "b")) {
+			this.toggle_flip(false);
+		}
+	},
+
+	toggle_flip: function(redraw = true) {			// config.flip should not be directly set, call this function instead.
 
 		config.flip = !config.flip;
 
@@ -2253,7 +2263,7 @@ let hub_props = {
 			}
 		}
 
-		this.draw();								// For the canvas stuff.
+		if (redraw) this.draw();					// For the canvas stuff.
 	},
 
 	set_arrow_filter: function(type, value) {
