@@ -1,4 +1,5 @@
 .DS_Store
+src/node_modules
 scripts/dist
 scripts/electron_zipped
 scripts/update_my_installation.py

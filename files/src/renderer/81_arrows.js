@@ -12,7 +12,7 @@ let arrow_props = {
 			}
 		}
 
-		if (!config.arrows_enabled || !node || node.destroyed) {
+		if (!config.show_move_guidance || !config.arrows_enabled || !node || node.destroyed) {
 			return;
 		}
 
@@ -345,7 +345,7 @@ let arrow_props = {
 				s = "?";
 			}
 
-			boardctx.fillText(s, cc2.cx, cc2.cy + 1);
+			if (config.show_scores) boardctx.fillText(s, cc2.cx, cc2.cy + 1);
 		}
 
 		draw_arrows_last_mode = mode;		// For debugging only.
@@ -366,7 +366,7 @@ let arrow_props = {
 			}
 		}
 
-		if (!node || node.destroyed) {
+		if (!config.show_move_guidance || !node || node.destroyed) {
 			return;
 		}
 
@@ -479,7 +479,7 @@ let arrow_props = {
 				s = (100 * o.info.weight).toFixed(0);
 			}
 
-			boardctx.fillText(s, cc2.cx, cc2.cy + 1);
+			if (config.show_scores) boardctx.fillText(s, cc2.cx, cc2.cy + 1);
 		}
 	}
 };

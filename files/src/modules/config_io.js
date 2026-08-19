@@ -70,11 +70,14 @@ exports.defaults = {
 	"arrow_filter_value": 0.01,
 
 	"arrows_enabled": true,
+	"show_move_guidance": true,
+	"show_scores": true,
 	"click_spotlight": true,
 	"next_move_arrow": false,
 	"next_move_outline": false,
 	"next_move_unique_colour": false,
 	"arrowhead_type": 0,
+	"move_badges": true,
 
 	"ev_pov": null,
 	"cp_pov": null,

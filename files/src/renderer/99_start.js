@@ -159,8 +159,19 @@ fullbox.addEventListener("mousedown", (event) => {
 });
 
 boardfriends.addEventListener("mousedown", (event) => {
-	hub.boardfriends_click(event);
+	if (position_editor.handle_board_mousedown(event)) return;
+	if (annotations_handler.mousedown(event)) return;
+	if (event.button === 0) {
+		hub.clear_annotations();
+		hub.boardfriends_click(event);
+	}
 });
+
+boardfriends.addEventListener("contextmenu", (event) => event.preventDefault());
+window.addEventListener("mousemove", (event) => annotations_handler.mousemove(event));
+window.addEventListener("mouseup", (event) => annotations_handler.mouseup(event));
+window.addEventListener("blur", () => annotations_handler.cancel());
+window.addEventListener("mouseleave", () => annotations_handler.cancel());
 
 infobox.addEventListener("mousedown", (event) => {
 	hub.infobox_click(event);
@@ -247,6 +258,9 @@ fenbox.addEventListener("keydown", (event) => {
 // Set space-bar to toggle go/halt, unless we're in the FEN box...
 
 window.addEventListener("keydown", (event) => {
+	if (event.key === "Escape") {
+		hub.clear_annotations();
+	}
 	if (event.key === " ") {
 		let ae = document.activeElement;
 		if (ae.tagName !== "INPUT" && ae.tagName !== "TEXTAREA" && !ae.isContentEditable) {
@@ -257,6 +271,31 @@ window.addEventListener("keydown", (event) => {
 		}
 	}
 });
+
+for (let piece of "KQRBNPkqrbnp") {
+	let button = document.createElement("button");
+	button.textContent = {K:"♔",Q:"♕",R:"♖",B:"♗",N:"♘",P:"♙",k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"}[piece];
+	button.dataset.piece = piece;
+	button.addEventListener("click", () => {
+		position_editor.selected_piece = position_editor.selected_piece === piece ? null : piece;
+		for (let item of position_editor_palette.children) item.classList.toggle("selected", item === button && position_editor.selected_piece);
+	});
+	position_editor_palette.appendChild(button);
+}
+
+editor_castling.addEventListener("input", () => position_editor.sync_castling_checks());
+for (let input of document.querySelectorAll("[data-castling]")) {
+	input.addEventListener("change", () => {
+		let rights = editor_castling.value === "-" ? "" : editor_castling.value;
+		rights = rights.replace(input.dataset.castling, "");
+		if (input.checked) rights += input.dataset.castling;
+		editor_castling.value = rights || "-";
+	});
+}
+editor_start.addEventListener("click", () => position_editor.set_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+editor_clear.addEventListener("click", () => position_editor.clear_board());
+editor_cancel.addEventListener("click", () => position_editor.cancel());
+editor_apply.addEventListener("click", () => position_editor.apply());
 
 window.addEventListener("resize", (event) => {
 	hub.window_resize_time = performance.now();

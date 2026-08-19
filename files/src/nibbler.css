@@ -74,6 +74,33 @@ body {
 	z-index: 3;
 }
 
+#position_editor {
+	background: #101010;
+	border: 1px solid #444444;
+	display: none;
+	font-family: monospace, monospace;
+	left: calc(1em + var(--board-size, 640px) + 1em);
+	max-width: 28em;
+	padding: 1em;
+	pointer-events: auto;
+	position: fixed;
+	top: 1em;
+	z-index: 5;
+}
+
+#position_editor label, .editor_castling label { display: block; margin-top: .55em; }
+#position_editor input, #position_editor select, #position_editor button {
+	background: #181818; border: 1px solid #555555; color: #eeeeee; font: inherit;
+}
+.editor_title { color: #6cccee; font-size: 120%; margin-bottom: .75em; }
+#position_editor_palette { display: grid; gap: .3em; grid-template-columns: repeat(6, 1fr); }
+#position_editor_palette button { font-size: 180%; min-width: 1.7em; }
+#position_editor_palette button.selected { border-color: #6cccee; color: #6cccee; }
+.editor_castling { margin-top: .7em; }
+#editor_castling { box-sizing: border-box; margin-top: .4em; width: 100%; }
+#position_editor_error { color: #ff6666; min-height: 1.3em; margin-top: .6em; white-space: normal; }
+.editor_buttons { display: flex; flex-wrap: wrap; gap: .4em; margin-top: .5em; }
+
 .dragging-piece {
     cursor: grabbing !important;
 }
@@ -187,6 +214,21 @@ input[type=text]:focus {
 	border-color: #444444;
 	outline: none;
 }
+
+.badge-legend { max-width: 72em; white-space: normal; }
+.badge-legend h1 { color: #6cccee; font-size: 150%; margin: 0 0 .4em; }
+.badge-legend h2 { color: #dddddd; font-size: 110%; margin: 1.4em 0 .6em; }
+.badge-legend > p { color: #999999; }
+.badge-legend-grid { display: grid; gap: .65em; grid-template-columns: repeat(auto-fit, minmax(18em, 1fr)); }
+.badge-legend-item { align-items: center; background: #101010; border: 1px solid #333333; display: flex; gap: .75em; padding: .65em; }
+.badge-legend-item strong, .badge-legend-item small { display: block; }
+.badge-legend-item small { color: #999999; margin-top: .25em; }
+.badge-legend-icon {
+	align-items: center; background: #141414; border: 2px solid; border-radius: 50%;
+	box-sizing: border-box; color: #ffffff; display: inline-flex; flex: 0 0 2.6em;
+	font: bold 1em Arial; height: 2.6em; justify-content: center;
+}
+#badge_legend_close { background: #181818; border: 1px solid #555555; color: #eeeeee; font: inherit; margin-top: 1.2em; padding: .4em 1em; }
 
 td {
 	background-color: transparent;

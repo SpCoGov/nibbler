@@ -27,6 +27,10 @@ function NewNode(parent, move, board_for_root) {		// move must be legal; board i
 
 	node.table = NewTable();
 	node.searchmoves = [];
+	node.annotations = [];
+	node.motifs = null;
+	node.nag = "";
+	node.nag_from_pgn = false;
 	node.__nice_move = null;
 	node.destroyed = false;
 	node.children = [];
@@ -287,6 +291,7 @@ const node_prototype = {
 		}
 
 		s += this.nice_move();
+		s += this.nag;
 
 		if (stats_flag) {
 			let stats = this.make_stats();
@@ -488,6 +493,10 @@ function __destroy_tree(node) {
 		node.board = null;
 		node.children = null;
 		node.searchmoves = null;
+		node.annotations = null;
+		node.motifs = null;
+		node.nag = null;
+		node.nag_from_pgn = null;
 		node.table = null;
 		node.graph_length_knower = null;
 		node.destroyed = true;
@@ -505,6 +514,10 @@ function __destroy_tree(node) {
 	node.board = null;
 	node.children = null;
 	node.searchmoves = null;
+	node.annotations = null;
+	node.motifs = null;
+	node.nag = null;
+	node.nag_from_pgn = null;
 	node.table = null;
 	node.graph_length_knower = null;
 	node.destroyed = true;
