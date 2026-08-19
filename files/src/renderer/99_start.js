@@ -75,7 +75,7 @@ fullbox.style["font-size"] = config.info_font_size.toString() + "px";
 movelist.style["font-size"] = config.pgn_font_size.toString() + "px";
 fenbox.style["font-size"] = config.fen_font_size.toString() + "px";
 
-if (config.graph_height <= 0) {
+if (!config.show_evaluation_graph || config.graph_height <= 0) {
 	graph.style.display = "none";
 } else {
 	graph.style.height = config.graph_height.toString() + "px";

@@ -3745,7 +3745,7 @@ checker();
 // produce misleading "extra key" diagnostics for every other language.
 Object.assign(translations["简体中文"], {
 	"Move guidance (board and PV)": "走法指导（棋盘和右侧 PV）",
-	"Evaluation scores": "评价分数",
+	"Evaluation graph": "评价曲线图",
 	"Position": "局面",
 	"Edit Position": "编辑局面",
 	"Clear annotations": "清除标记",
@@ -3827,7 +3827,7 @@ Object.assign(translations["简体中文"], {
 
 Object.assign(translations["繁體中文"], {
 	"Move guidance (board and PV)": "走法指導（棋盤和右側 PV）",
-	"Evaluation scores": "評價分數",
+	"Evaluation graph": "評價曲線圖",
 	"Position": "局面",
 	"Edit Position": "編輯局面",
 	"Clear annotations": "清除標記",

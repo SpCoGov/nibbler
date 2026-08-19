@@ -71,7 +71,7 @@ exports.defaults = {
 
 	"arrows_enabled": true,
 	"show_move_guidance": true,
-	"show_scores": true,
+	"show_evaluation_graph": true,
 	"click_spotlight": true,
 	"next_move_arrow": false,
 	"next_move_outline": false,

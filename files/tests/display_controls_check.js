@@ -11,7 +11,7 @@ const info = {
 };
 const context = {
 	config: {
-		show_move_guidance: true, show_scores: true, show_cp: false,
+		show_move_guidance: true, show_cp: false,
 		searchmoves_buttons: false, never_grayout_infolines: false,
 		infobox_pv_move_numbers: false, max_info_lines: null, looker_api: null
 	},
@@ -33,10 +33,15 @@ assert.match(context.infobox.innerHTML, /60\.0%/);
 assert.match(context.infobox.innerHTML, /e4/);
 
 context.config.show_move_guidance = false;
-context.config.show_scores = false;
 box.must_draw_infobox();
 box.draw_infobox(node, null, null, "w", null, false, null);
-assert.doesNotMatch(context.infobox.innerHTML, /60\.0%|e4|e5/);
+assert.match(context.infobox.innerHTML, /60\.0%/);
+assert.doesNotMatch(context.infobox.innerHTML, /e4|e5/);
 assert.equal(box.info_clickers.length, 0);
+
+const graph_context = {config: {show_evaluation_graph: false, graph_height: 96}};
+vm.createContext(graph_context);
+vm.runInContext(fs.readFileSync(path.join(__dirname, "../src/renderer/55_winrate_graph.js"), "utf8"), graph_context);
+vm.runInContext("NewGrapher().draw({all_graph_values: () => { throw new Error('hidden graph rendered'); }})", graph_context);
 
 console.log("Display controls OK");

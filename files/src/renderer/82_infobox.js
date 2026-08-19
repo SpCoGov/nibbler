@@ -166,12 +166,10 @@ let infobox_props = {
 				}
 			}
 
-			if (config.show_scores) {
-				if (info.subcycle === best_subcycle || config.never_grayout_infolines) {
-					substrings.push(`<span class="blue">${value_string} </span>`);
-				} else {
-					substrings.push(`${value_string} `);
-				}
+			if (info.subcycle === best_subcycle || config.never_grayout_infolines) {
+				substrings.push(`<span class="blue">${value_string} </span>`);
+			} else {
+				substrings.push(`${value_string} `);
 			}
 
 			// The PV...

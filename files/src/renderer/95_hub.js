@@ -2226,6 +2226,11 @@ let hub_props = {
 			this.tree.node.searchmoves = [];		// This is reasonable regardless of which way the toggle went.
 			this.handle_search_params_change();
 		}
+		if (option === "show_evaluation_graph") {
+			graph.style.display = config.show_evaluation_graph && config.graph_height > 0 ? "" : "none";
+			graph.style.height = config.graph_height.toString() + "px";
+			this.grapher.invalidate();
+		}
 
 		this.info_handler.must_draw_infobox();
 		this.draw();
@@ -2388,7 +2393,7 @@ let hub_props = {
 			}
 		}
 
-		if (config.graph_height <= 0) {
+		if (!config.show_evaluation_graph || config.graph_height <= 0) {
 			graph.style.display = "none";
 		} else {
 			graph.style.height = config.graph_height.toString() + "px";

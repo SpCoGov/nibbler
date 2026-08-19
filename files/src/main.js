@@ -1069,13 +1069,13 @@ function menu_build() {
 					}
 				},
 				{
-					label: translate.t("Evaluation scores"),
+					label: translate.t("Evaluation graph"),
 					type: "checkbox",
-					checked: config.show_scores,
+					checked: config.show_evaluation_graph,
 					click: () => {
 						win.webContents.send("call", {
 							fn: "toggle",
-							args: ["show_scores"],
+							args: ["show_evaluation_graph"],
 						});
 					}
 				},

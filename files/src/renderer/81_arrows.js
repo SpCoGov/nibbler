@@ -345,7 +345,7 @@ let arrow_props = {
 				s = "?";
 			}
 
-			if (config.show_scores) boardctx.fillText(s, cc2.cx, cc2.cy + 1);
+			boardctx.fillText(s, cc2.cx, cc2.cy + 1);
 		}
 
 		draw_arrows_last_mode = mode;		// For debugging only.
@@ -479,7 +479,7 @@ let arrow_props = {
 				s = (100 * o.info.weight).toFixed(0);
 			}
 
-			if (config.show_scores) boardctx.fillText(s, cc2.cx, cc2.cy + 1);
+			boardctx.fillText(s, cc2.cx, cc2.cy + 1);
 		}
 	}
 };

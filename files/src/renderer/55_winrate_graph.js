@@ -32,7 +32,7 @@ function NewGrapher() {
 	};
 
 	grapher.draw = function(node) {
-		if (config.graph_height <= 0) {
+		if (!config.show_evaluation_graph || config.graph_height <= 0) {
 			return;
 		}
 		let eval_list = node.all_graph_values();
