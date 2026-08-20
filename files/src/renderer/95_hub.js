@@ -143,6 +143,7 @@ let hub_props = {
 		this.hoverdraw_div = -1;
 		this.position_change_time = performance.now();
 		fenbox.value = this.tree.node.board.fen(true);
+		this.sync_auto_flip();
 
 		if (new_game_flag) {
 			this.node_to_clean = null;
@@ -472,6 +473,10 @@ let hub_props = {
 	// Drawing properties...
 
 	draw: function() {
+		if (position_editor.active) {
+			position_editor.draw_board();
+			return;
+		}
 
 		// We do the :hover reaction first. This way, we are detecting hover based on the previous cycle's state.
 		// This should prevent the sort of flicker that can occur if we try to detect hover based on changes we
@@ -803,6 +808,7 @@ let hub_props = {
 
 	draw_canvas_arrows: function() {
 		boardctx.clearRect(0, 0, canvas.width, canvas.height);
+		draw_annotations(this.tree.node);
 		if (config.book_explorer) {
 			this.draw_explorer_arrows();
 		} else if (config.lichess_explorer) {
@@ -812,6 +818,8 @@ let hub_props = {
 			let next_move = (config.next_move_arrow && this.tree.node.children.length > 0) ? this.tree.node.children[0].move : null;
 			this.info_handler.draw_arrows(this.tree.node, arrow_spotlight_square, next_move);
 		}
+		annotations_handler.draw_preview();
+		draw_move_badges(this.tree.node);
 	},
 
 	draw_explorer_arrows: function() {
@@ -1911,6 +1919,17 @@ let hub_props = {
 	},
 
 	// ---------------------------------------------------------------------------------------------------------------------
+	edit_position: function() {
+		position_editor.open();
+	},
+
+	clear_annotations: function() {
+		if (this.tree.node.annotations.length > 0) {
+			this.tree.node.annotations = [];
+			if (position_editor.active) position_editor.draw_board(); else this.draw_canvas_arrows();
+		}
+	},
+
 	// Mouse and mouseclicks...
 
 	set_active_square: function(new_point) {
@@ -2084,6 +2103,10 @@ let hub_props = {
 	fullbox_click: function(event) {
 
 		let n;
+		if (EventPathString(event, "badge_legend_close") !== null) {
+			this.hide_fullbox();
+			return;
+		}
 
 		// Config item editor...
 
@@ -2204,12 +2227,26 @@ let hub_props = {
 			this.tree.node.searchmoves = [];		// This is reasonable regardless of which way the toggle went.
 			this.handle_search_params_change();
 		}
+		if (option === "show_evaluation_graph") {
+			graph.style.display = config.show_evaluation_graph && config.graph_height > 0 ? "" : "none";
+			graph.style.height = config.graph_height.toString() + "px";
+			this.grapher.invalidate();
+		}
+		if (option === "auto_flip_board") {
+			this.sync_auto_flip();
+		}
 
 		this.info_handler.must_draw_infobox();
 		this.draw();
 	},
 
-	toggle_flip: function() {						// config.flip should not be directly set, call this function instead.
+	sync_auto_flip: function() {
+		if (config.auto_flip_board && config.flip !== (this.tree.node.board.active === "b")) {
+			this.toggle_flip(false);
+		}
+	},
+
+	toggle_flip: function(redraw = true) {			// config.flip should not be directly set, call this function instead.
 
 		config.flip = !config.flip;
 
@@ -2226,7 +2263,7 @@ let hub_props = {
 			}
 		}
 
-		this.draw();								// For the canvas stuff.
+		if (redraw) this.draw();					// For the canvas stuff.
 	},
 
 	set_arrow_filter: function(type, value) {
@@ -2366,7 +2403,7 @@ let hub_props = {
 			}
 		}
 
-		if (config.graph_height <= 0) {
+		if (!config.show_evaluation_graph || config.graph_height <= 0) {
 			graph.style.display = "none";
 		} else {
 			graph.style.height = config.graph_height.toString() + "px";
@@ -2531,6 +2568,14 @@ let hub_props = {
 
 	// ---------------------------------------------------------------------------------------------------------------------
 	// Fullbox (our full size info div)...
+
+	show_badge_legend: function() {
+		fullbox_content.innerHTML = badge_legend_html();
+		for (let icon of fullbox_content.querySelectorAll(".badge-legend-icon")) {
+			icon.style.borderColor = icon.dataset.colour;
+		}
+		this.show_fullbox();
+	},
 
 	show_pgn_chooser: function() {
 

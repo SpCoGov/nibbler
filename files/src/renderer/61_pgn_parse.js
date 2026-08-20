@@ -7,6 +7,11 @@ function new_pgn_record() {
 	};
 }
 
+function PGNNAG(s) {
+	let nags = {"$1":"!", "$2":"?", "$3":"!!", "$4":"??", "$5":"!?", "$6":"?!"};
+	return nags[s] || (["!!", "??", "!?", "?!", "!", "?"].includes(s) ? s : "");
+}
+
 function PreParsePGN(buf) {								// buf should be the buffer for a single game, only.
 
 	// Partial parse of the buffer. Generates a tags object and a list of buffers, each of which is a line
@@ -167,7 +172,23 @@ function LoadPGNRecord(o) {				// This can throw!
 
 				// Parse s.
 
-				if (s === "" || s === "+" || s.startsWith("$") || StringIsNumeric(s)) {
+				if (s.startsWith("$")) {
+					if (node.move) {
+						node.nag = PGNNAG(s);
+						node.nag_from_pgn = Boolean(node.nag);
+					}
+					continue;
+				}
+
+				if (PGNNAG(s)) {
+					if (node.move) {
+						node.nag = PGNNAG(s);
+						node.nag_from_pgn = true;
+					}
+					continue;
+				}
+
+				if (s === "" || s === "+" || StringIsNumeric(s)) {
 					// Useless token.
 					continue;
 				}
@@ -178,6 +199,13 @@ function LoadPGNRecord(o) {				// This can throw!
 				}
 
 				// Probably an actual move...
+
+				let nag = "";
+				let nag_match = s.match(/(\$(?:[1-6])|!!|\?\?|!\?|\?!|!|\?)$/);
+				if (nag_match) {
+					nag = PGNNAG(nag_match[1]);
+					s = s.slice(0, -nag_match[1].length);
+				}
 
 				let [move, error] = node.board.parse_pgn(s);
 
@@ -198,6 +226,8 @@ function LoadPGNRecord(o) {				// This can throw!
 				}
 
 				node = node.make_move(move, true);
+				node.nag = nag;
+				node.nag_from_pgn = Boolean(nag);
 			}
 		}
 

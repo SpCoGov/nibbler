@@ -14,7 +14,7 @@ const drag_handler = {
 		}
 
 		if (this.drag_state.floating) {					// Drag is in progress...
-			hub.set_active_square(null);
+			if (!position_editor.active) hub.set_active_square(null);
 			this.drag_state.floating.remove();
 			this.drag_state.floating = null;			// Not strictly needed.
 		}
@@ -24,7 +24,7 @@ const drag_handler = {
 		this.drag_state = null;
 		document.body.classList.remove("dragging-piece");
 
-		if (config.click_spotlight) {
+		if (config.click_spotlight && !position_editor.active) {
 			hub.draw_canvas_arrows();					// Might need to clear spotlight arrows.
 		}
 	},
@@ -88,8 +88,8 @@ const drag_handler = {
 
 			// Drag starting now!
 
-			hub.set_active_square(Point(this.drag_state.from_square));
-			if (config.click_spotlight) {
+			if (!position_editor.active) hub.set_active_square(Point(this.drag_state.from_square));
+			if (config.click_spotlight && !position_editor.active) {
 				hub.draw_canvas_arrows();
 			}
 
@@ -143,7 +143,9 @@ const drag_handler = {
 				e = e.parentElement;
 			}
 
-			if (target_element) {
+			if (position_editor.active) {
+				position_editor.move_piece(this.drag_state.from_square, target_element ? target_element.id.slice(8) : null);
+			} else if (target_element) {
 				let move = this.drag_state.from_square + target_element.id.slice(8);
 				let ok = hub.move(move);
 				if (!ok && config.click_spotlight) {	// The spotlight needs to be cleared.

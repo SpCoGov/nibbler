@@ -12,7 +12,7 @@ let arrow_props = {
 			}
 		}
 
-		if (!config.arrows_enabled || !node || node.destroyed) {
+		if (!config.show_move_guidance || !config.arrows_enabled || !node || node.destroyed) {
 			return;
 		}
 
@@ -366,7 +366,7 @@ let arrow_props = {
 			}
 		}
 
-		if (!node || node.destroyed) {
+		if (!config.show_move_guidance || !node || node.destroyed) {
 			return;
 		}
 

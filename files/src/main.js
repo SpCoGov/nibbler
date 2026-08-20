@@ -627,6 +627,20 @@ function menu_build() {
 			]
 		},
 		{
+			label: translate.t("Position"),
+			submenu: [
+				{
+					label: translate.t("Edit Position"),
+					click: () => win.webContents.send("call", "edit_position")
+				},
+				{
+					label: translate.t("Clear annotations"),
+					accelerator: "Esc",
+					click: () => win.webContents.send("call", "clear_annotations")
+				}
+			]
+		},
+		{
 			label: translate.t("Tree"),
 			submenu: [
 				{
@@ -1044,12 +1058,48 @@ function menu_build() {
 			label: translate.t("Display"),
 			submenu: [
 				{
+					label: translate.t("Move guidance (board and PV)"),
+					type: "checkbox",
+					checked: config.show_move_guidance,
+					click: () => {
+						win.webContents.send("call", {
+							fn: "toggle",
+							args: ["show_move_guidance"],
+						});
+					}
+				},
+				{
+					label: translate.t("Evaluation graph"),
+					type: "checkbox",
+					checked: config.show_evaluation_graph,
+					click: () => {
+						win.webContents.send("call", {
+							fn: "toggle",
+							args: ["show_evaluation_graph"],
+						});
+					}
+				},
+				{
+					type: "separator"
+				},
+				{
 					label: translate.t("Flip board"),
 					accelerator: "CommandOrControl+F",
 					click: () => {
 						win.webContents.send("call", {
 							fn: "toggle",
 							args: ["flip"],
+						});
+					}
+				},
+				{
+					label: translate.t("Side to move at bottom"),
+					type: "checkbox",
+					checked: config.auto_flip_board,
+					click: () => {
+						win.webContents.send("call", {
+							fn: "toggle",
+							args: ["auto_flip_board"],
 						});
 					}
 				},
@@ -1110,6 +1160,21 @@ function menu_build() {
 							args: ["next_move_outline"],
 						});
 					}
+				},
+				{
+					label: translate.t("Move motif / NAG badges"),
+					type: "checkbox",
+					checked: config.move_badges,
+					click: () => {
+						win.webContents.send("call", {
+							fn: "toggle",
+							args: ["move_badges"],
+						});
+					}
+				},
+				{
+					label: translate.t("Badge legend"),
+					click: () => win.webContents.send("call", "show_badge_legend")
 				},
 				{
 					type: "separator"

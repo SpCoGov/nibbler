@@ -178,7 +178,7 @@ let infobox_props = {
 			let movenum = node.board.fullmove;			// Only matters for config.infobox_pv_move_numbers
 			let nice_pv = info.nice_pv();
 
-			for (let i = 0; i < nice_pv.length; i++) {
+			for (let i = 0; config.show_move_guidance && i < nice_pv.length; i++) {
 				let spanclass = "";
 				if (info.subcycle === best_subcycle || config.never_grayout_infolines) {
 					spanclass = colour === "w" ? "white" : "pink";
